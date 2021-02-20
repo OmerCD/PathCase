@@ -1,0 +1,24 @@
+.login-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.login-container input{
+    font-size: 32px;
+    margin-bottom:10px;
+}
+.login-container input::placeholder {
+    text-align: center;
+}
+.login-container button {
+    font-size: 24px;
+    padding-left: 48px;
+    padding-right: 48px;
+}
+.form-container
+{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
