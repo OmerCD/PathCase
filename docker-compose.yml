@@ -1,0 +1,26 @@
+# Please refer https://aka.ms/HTTPSinContainer on how to setup an https developer certificate for your ASP .NET Core service.
+
+version: '3.4'
+
+services:
+  pathcasemvc:
+    image: pathcasemvc
+    build:
+      context: ./PathCase.MVC
+      dockerfile: ./Dockerfile
+    expose:
+      - 5000
+    ports:
+      - 5000:5000
+    environment: 
+      - ASPNETCORE_ENVIRONMENT="Development"
+      - ASPNETCORE_URLS=http://+:5000
+  pathcaseidentity:
+    build:
+      context: ./PathCase.IdentityServer
+      dockerfile: ./Dockerfile
+    expose: 
+      - 5001
+    environment: 
+      - ASPNETCORE_ENVIRONMENT="Development"
+      - ASPNETCORE_URLS=http://+:5001

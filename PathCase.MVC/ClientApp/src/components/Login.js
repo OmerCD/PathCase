@@ -1,11 +1,17 @@
 import React, { useEffect, useState } from 'react';
+import { AxiosContext } from '../contexts/AxiosContext';
 import "./Login.css"
 
 function Login({ onValidSubmit }) {
-    const handleLogin = (e) => {
+    const axios = React.useContext(AxiosContext);
+    const handleLogin = async (e) => {
         e.preventDefault();
         const element = document.getElementById("userName");
         const userName = element.value;
+        const response = await axios.post("authentication",{userName})
+        const {token} = response.data;
+        localStorage.setItem("path.token", token);
+        axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
         onValidSubmit(userName);
     }
     return (
