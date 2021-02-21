@@ -8,7 +8,7 @@ import ChatRoom from "./ChatRoom";
 import ChatRoomService from "../services/ChatRoomService";
 import { SignalRContext } from "../contexts/SignalRContext";
 
-function ChatRooms({ location, history }) {
+function ChatRooms({ location, history, userName }) {
   const [roomMessages, setRoomMessages] = useState([]);
 
   const axios = React.useContext(AxiosContext);
@@ -35,10 +35,11 @@ function ChatRooms({ location, history }) {
       setRooms(response.data.rooms);
     });
   }, []);
-  if (!location.state || !location.state.userName) {
+  if (!userName) {
+	  console.log('Redirect. Username :'+userName);
+	  debugger;
     return <Redirect to={"/"} />;
   }
-  const { userName } = location.state;
   const newMessageHandler = (message, userName) => {
     setRoomMessages([
       ...roomMessages,

@@ -4,6 +4,7 @@ import "./Login.css"
 
 function Login({ onValidSubmit }) {
     const axios = React.useContext(AxiosContext);
+    useEffect(()=>localStorage.removeItem('path.token'), []);
     const handleLogin = async (e) => {
         e.preventDefault();
         const element = document.getElementById("userName");
