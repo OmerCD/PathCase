@@ -5,6 +5,7 @@ const connection = new signalR.HubConnectionBuilder()
   .withUrl("/chatHub", {
     accessTokenFactory: () => localStorage.getItem("path.token"),
   })
+  .withAutomaticReconnect()
   .build();
 
 const SignalRContext = React.createContext(connection);

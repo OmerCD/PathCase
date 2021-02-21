@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:5.0-focal AS build
 
 RUN curl --silent --location https://deb.nodesource.com/setup_10.x | bash -
 RUN apt-get install --yes nodejs

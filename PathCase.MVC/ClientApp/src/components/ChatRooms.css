@@ -44,14 +44,14 @@
 .chat-room:hover {
 	background-color: rgba(182, 221, 76, 0.92);
 }
-.chat-room[disabled='true'] {
-	background-color: red;
-}
 .chat-room[disabled]{
   background-color: red;
   cursor: not-allowed;
 }
-
+.chat-room.selected{
+	background-color: rgb(75, 73, 182);
+	color: white;
+}
 .joined-room-name {
 	width: 85%;
 	height: 39px;
@@ -96,7 +96,11 @@
 	margin-right: 5%;
 	background: #00af9c;
 }
-
+.server-message {
+	margin-left: auto;
+	margin-right: auto;
+	background-color: darkblue;
+}
 .message-background {
 	background-color: rgba(202, 28, 202, 0.438);
 }
@@ -122,6 +126,8 @@
 	height: 100%;
 	max-height: 100%;
 	margin-left: 1%;
+	background-color: rgba(62,62,62,.95);
+	color:white;
 }
 .chat-input button {
 	width: 5%;
@@ -132,13 +138,14 @@
 	float: right;
 	border-top-right-radius: 15px;
 	/* border-bottom-right-radius: 15px; */
-	border: 1px solid white;
+	border: 1px solid grey;
 	border-left: none;
 }
 
 .chat-input button:disabled,
 .chat-input textarea:disabled {
 	cursor: not-allowed;
-	border: none;
-	color: grey;
+	border: 1px solid black;
+	background-color: rgba(27, 27, 27, .5);
+	color:grey;
 }

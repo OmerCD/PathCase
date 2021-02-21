@@ -33,7 +33,7 @@ namespace PathCase.MVC.Hubs
             }
             await Groups.AddToGroupAsync(Context.ConnectionId, groupName);
             _groupManager.AddUser(groupName, new UserInfo(userName, Context.ConnectionId));
-            await Clients.Group(groupName).ServerMessage($"{Context.ConnectionId} has joined the group {groupName}.");
+            await Clients.GroupExcept(groupName,Context.ConnectionId).ServerMessage($"{userName} has joined the group {groupName}.");
         }
 
         public override Task OnDisconnectedAsync(Exception? exception)
@@ -53,7 +53,7 @@ namespace PathCase.MVC.Hubs
         {
             var userName = Context.User.GetName();
             _chatRoomService.AddChatLog(groupName, message, userName);
-            await Clients.Group(groupName).Message(message, userName);
+            await Clients.GroupExcept(groupName, Context.ConnectionId).Message(message, userName);
         }
     }
 }

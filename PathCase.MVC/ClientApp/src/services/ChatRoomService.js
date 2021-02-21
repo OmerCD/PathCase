@@ -1,6 +1,7 @@
 class ChatRoomService {
-	constructor(axiosService, signalRConnection, onMessage, onConnected, onClosed) {
+	constructor(axiosService, signalRConnection, onMessage, onServerMessage, onConnected, onClosed) {
 		signalRConnection.on('Message', onMessage);
+		signalRConnection.on('ServerMessage', onServerMessage);
 		signalRConnection.onclose(onClosed);
 		if (signalRConnection.connectionState != 'Connected') {
 			signalRConnection
@@ -13,7 +14,6 @@ class ChatRoomService {
 	}
 
 	async joinRoom(roomName) {
-    debugger;
 		if (this.connection.connectionState == 'Connected') {
 			this.connection.invoke('JoinGroup', roomName);
 		}
