@@ -42,5 +42,10 @@ namespace PathCase.Infrastructure.Services
                 keyValuePair.Value.RemoveUser(connectionId);
             }
         }
+
+        public string GetUserRoom(string connectionId)
+        {
+            return Rooms.FirstOrDefault(x => x.Value.Users.Any(y => y.ConnectionId == connectionId)).Value?.RoomName;
+        }
     }
 }

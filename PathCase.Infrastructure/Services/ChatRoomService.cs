@@ -18,5 +18,19 @@ namespace PathCase.Infrastructure.Services
         {
             return _roomReposıtory.GetAll();
         }
+
+        public void AddChatLog(string groupName, string message, string sender)
+        {
+            _roomReposıtory.AddChatLog(groupName, new ChatLog()
+            {
+                Message = message,
+                Sender = sender
+            });
+        }
+
+        public IEnumerable<ChatLog> GetChatLogs(string roomName)
+        {
+            return _roomReposıtory.GetChatLog(roomName);
+        }
     }
 }

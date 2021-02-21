@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Net.Http;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using IdentityModel;
@@ -30,23 +31,34 @@ namespace PathCase.Domain.Commands
 
         public async Task<LoginResponseModel> Handle(LoginCommand request, CancellationToken cancellationToken)
         {
-            var identityServerClient = _httpFactory.CreateClient("IdentityServer");
-            var discoveryDocument = await identityServerClient.GetDiscoveryDocumentAsync(cancellationToken: cancellationToken);
-
-            
-            var tokenRequest = new ClientCredentialsTokenRequest()
+            TokenResponse requestClientCredentialsToken;
+            try
             {
-                Address = discoveryDocument.TokenEndpoint,
-                ClientSecret = _identityServerOptions.Secret,
-                ClientId = _identityServerOptions.ClientId,
-                GrantType = OidcConstants.GrantTypes.ClientCredentials,
-                Scope = _identityServerOptions.Scope,
-                Parameters = new Parameters(new KeyValuePair<string, string>[]
+                var identityServerClient = _httpFactory.CreateClient("IdentityServer");
+                Console.WriteLine("Identity Server Base URL :" + identityServerClient.BaseAddress);
+                var discoveryDocument = await identityServerClient.GetDiscoveryDocumentAsync(cancellationToken: cancellationToken);
+                Console.WriteLine("Token Endpoint :" + discoveryDocument.TokenEndpoint);
+                var tokenRequest = new ClientCredentialsTokenRequest()
                 {
-                    new("userName",request.UserName)
-                })
-            };
-            var requestClientCredentialsToken = await identityServerClient.RequestClientCredentialsTokenAsync(tokenRequest, cancellationToken: cancellationToken);
+                    Address = identityServerClient.BaseAddress+"connect/token",
+                    ClientSecret = _identityServerOptions.Secret,
+                    ClientId = _identityServerOptions.ClientId,
+                    GrantType = OidcConstants.GrantTypes.ClientCredentials,
+                    Scope = _identityServerOptions.Scope,
+                    Parameters = new Parameters(new KeyValuePair<string, string>[]
+                    {
+                        new("userName",request.UserName)
+                    })
+                };
+                Console.WriteLine("Token Request:" +JsonSerializer.Serialize(tokenRequest));
+                requestClientCredentialsToken = await identityServerClient.RequestClientCredentialsTokenAsync(tokenRequest, cancellationToken: cancellationToken);
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
             return new LoginResponseModel()
             {
                 Token = requestClientCredentialsToken.AccessToken

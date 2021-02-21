@@ -44,7 +44,7 @@ namespace PathCase.MVC
             services.Configure<IdentityServerOptions>(Configuration.GetSection("IdentityServer"));
             services.AddHttpClient("IdentityServer", client =>
             {
-                client.BaseAddress = new Uri(Configuration["IdentityServer:Address"]);
+                client.BaseAddress = new Uri(Configuration["IdentityServer:Address"]+'/');
             });
             services.AddAuthentication("Bearer")
                 .AddJwtBearer("Bearer", options =>
@@ -53,9 +53,9 @@ namespace PathCase.MVC
                     options.RequireHttpsMetadata = false;
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
-                        ValidateAudience = false
+                        ValidateAudience = false,
                     };
-                    options.Events = new JwtBearerEvents
+                    options.Events = new JwtBearerEvents 
                     {
                         OnMessageReceived = context =>
                         {
@@ -87,8 +87,14 @@ namespace PathCase.MVC
             }).AsImplementedInterfaces().WithScopedLifetime());
             services.AddSingleton(new ChatGroupManager());
             services.AddMongo(Configuration.GetConnectionString("MongoDb"), Configuration["MongoDatabaseName"]);
+            services.AddDistributedRedisCache(option => {
+                option.Configuration = Configuration["Redis:Address"];
+                option.InstanceName = Configuration["Redis:InstanceName"];
+            });
+
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration => { configuration.RootPath = "ClientApp/build"; });
+            services.AddScoped<RedisService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

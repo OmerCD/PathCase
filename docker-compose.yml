@@ -6,7 +6,7 @@ services:
   pathcasemvc:
     image: pathcasemvc
     build:
-      context: ./PathCase.MVC
+      context: .
       dockerfile: ./Dockerfile
     expose:
       - 5000
@@ -16,11 +16,30 @@ services:
       - ASPNETCORE_ENVIRONMENT="Development"
       - ASPNETCORE_URLS=http://+:5000
   pathcaseidentity:
+    image: pathcaseidentity
     build:
       context: ./PathCase.IdentityServer
       dockerfile: ./Dockerfile
     expose: 
       - 5001
+    ports:
+      - 5001:5001
     environment: 
       - ASPNETCORE_ENVIRONMENT="Development"
       - ASPNETCORE_URLS=http://+:5001
+  mongo:
+    image: mongo
+    restart: always
+    ports:
+      - 27017:27017
+  mongo-express:
+    image: mongo-express
+    restart: always
+    ports:
+      - 8081:8081
+    depends_on:
+      - mongo
+  redis:
+    image: redis
+    ports:
+      - 6379:6379

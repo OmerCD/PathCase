@@ -25,6 +25,12 @@ namespace PathCase.MVC.Hubs
         public async Task JoinGroup(string groupName)
         {
             var userName = Context.User.GetName();
+            var userRoom = _groupManager.GetUserRoom(connectionId: Context.ConnectionId);
+            if (!string.IsNullOrWhiteSpace(userRoom))
+            {
+                _groupManager.RemoveUser(Context.ConnectionId);
+                await Groups.RemoveFromGroupAsync(Context.ConnectionId, userRoom);
+            }
             await Groups.AddToGroupAsync(Context.ConnectionId, groupName);
             _groupManager.AddUser(groupName, new UserInfo(userName, Context.ConnectionId));
             await Clients.Group(groupName).ServerMessage($"{Context.ConnectionId} has joined the group {groupName}.");
@@ -46,6 +52,7 @@ namespace PathCase.MVC.Hubs
         public async Task SendMessage(string groupName, string message)
         {
             var userName = Context.User.GetName();
+            _chatRoomService.AddChatLog(groupName, message, userName);
             await Clients.Group(groupName).Message(message, userName);
         }
     }

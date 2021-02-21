@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -24,7 +25,16 @@ namespace PathCase.MVC.Controllers
             {
                 UserName = loginRequestModel.UserName
             };
-            var response = await _mediator.Send(command);
+            LoginResponseModel response;
+            try
+            {
+                response = await _mediator.Send(command);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
             return Ok(response);
         }
     }

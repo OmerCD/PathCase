@@ -14,8 +14,10 @@
         <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="9.0.0" />
         <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.3" />
         <PackageReference Include="Microsoft.AspNetCore.SpaServices.Extensions" Version="5.0.3" />
+        <PackageReference Include="Microsoft.Extensions.Caching.Redis" Version="2.2.0" />
         <PackageReference Include="MongoDB.Driver" Version="2.11.6" />
         <PackageReference Include="Scrutor" Version="3.3.0" />
+        <PackageReference Include="StackExchange.Redis" Version="2.2.4" />
     </ItemGroup>
 
     <ItemGroup>

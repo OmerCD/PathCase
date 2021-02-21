@@ -7,9 +7,6 @@ const connection = new signalR.HubConnectionBuilder()
   })
   .build();
 
-if (document.URL.indexOf("/chatRoom") > -1) {
-  connection.start().catch((x) => console.log(x));
-}
 const SignalRContext = React.createContext(connection);
 
 const SignalRProvider = ({ children }) => (

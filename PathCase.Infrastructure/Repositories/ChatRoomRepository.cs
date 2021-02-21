@@ -25,9 +25,10 @@ namespace PathCase.Infrastructure.Repositories
 
         public void AddChatLog(string roomName, ChatLog chatLog)
         {
-            var filter = Builders<ChatRoom>.Filter.Eq("name", roomName);
+            var filter = Builders<ChatRoom>.Filter.Eq("Name", roomName);
 
-            var room = Set.Find(filter).Single(); //Set.AsQueryable().FirstOrDefault(x => string.Equals(x.Name, roomName, StringComparison.InvariantCultureIgnoreCase));
+            var room = Set.Find(filter).First(); //Set.AsQueryable().FirstOrDefault(x => string.Equals(x.Name, roomName, StringComparison.InvariantCultureIgnoreCase));
+            room.ChatLogs ??= new List<ChatLog>();
             room.ChatLogs.Add(chatLog);
             var update = Builders<ChatRoom>.Update.Set("ChatLogs", room.ChatLogs);
             Set.UpdateOne(filter, update);
@@ -35,9 +36,9 @@ namespace PathCase.Infrastructure.Repositories
 
         public IList<ChatLog> GetChatLog(string roomName)
         {
-            var filter = Builders<ChatRoom>.Filter.Eq("name", roomName);
+            var filter = Builders<ChatRoom>.Filter.Eq("Name", roomName);
             var room = Set.Find(filter).Single();
-            return room?.ChatLogs;
+            return room?.ChatLogs ?? new List<ChatLog>();
         }
     }
 }
